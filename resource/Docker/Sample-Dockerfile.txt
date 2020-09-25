@@ -1,0 +1,8 @@
+# Mother class - by the rule willhave only 1 from
+FROM nginx:1.15.5-apline
+
+# Please don't use add cause this is too universal, use copy instead
+# . is file on our machine, /usr/share/nginx/html is the path in docker
+COPY . /usr/share/nginx/html
+
+# after this built image from this Docker file

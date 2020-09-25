@@ -1,0 +1,31 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    app: myweb
+  name: myweb-ingress
+spec:
+  rules:
+  - http:
+      paths:
+      - path:   
+        backend:
+          serviceName: myweb-clusterip
+          servicePort: 30081  
+
+# apiVersion: networking.k8s.io/v1beta1
+# kind: Ingress
+# metadata:
+#   annotations:
+#     app: myweb
+#     nginx.ingress.kubernetes.io/rewrite-target: /$2
+#     nginx.ingress.kubernetes.io/app-root: /app
+#   name: myweb-ingress
+# spec:
+#   rules:
+#   - http:
+#       paths:
+#       - path: /app(/|$)(.*)
+#         backend:
+#           serviceName: myweb-clusterip
+#           servicePort: 30081  

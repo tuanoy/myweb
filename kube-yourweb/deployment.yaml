@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: yourweb-deployment
+  labels:
+    app: yourweb    
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: yourweb
+  template:
+    metadata:
+      labels:
+        app: yourweb
+    spec:
+      containers:
+      - name: yourweb
+        image: oujai/myweb:latest
+        ports:
+        - containerPort: 5000

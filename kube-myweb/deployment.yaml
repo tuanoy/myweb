@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myweb-deployment
+  labels:
+    app: myweb  
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: myweb
+  template:
+    metadata:
+      name: myweb-template
+      labels:
+        app: myweb
+    spec:
+      containers:
+      - name: myweb-container
+        image: localhost:8080/asnpahp/myweb:latest
+
+        # --- 1. Parameter 
+        env:
+        - name: someparameter
+          value: "This is PRD environment"
+
+        # --- 2. Kill
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 5000
+          initialDelaySeconds: 5
+          timeoutSeconds: 30
+          periodSeconds: 60
+          successThreshold: 1
+          failureThreshold: 5
+
+        # --- 3. Put to Pod
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 5000
+          initialDelaySeconds: 10
+          timeoutSeconds: 30
+          periodSeconds: 60
+          successThreshold: 1
+          failureThreshold: 3
+
+        # --- 4. resource
+        resources:
+          requests:
+            cpu: "20m"
+            memory: "128Mi"
+          limits:
+            cpu: "40m"
+            memory: "256Mi"
