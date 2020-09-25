@@ -124,6 +124,7 @@
     kubectl logs --max-log-requests=8 -f -l app=myweb > mylog.log
 
 การ Install ทั้ง Docker และ Kubernetes จะแอบแก้ไขไฟล์ C:\Windows\System32\drivers\etc\hosts ให้เราอัติโนมัติ
+
     __# Added by Docker Desktop__
     192.168.48.118 host.docker.internal
     192.168.48.118 gateway.docker.internal
