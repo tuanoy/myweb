@@ -44,30 +44,34 @@
 
 ### 1.3 Command เพิ่มเติม
 
-    docker container ls
-    docker logs [CONTAINER ID]
-    docker exec -it [CONTAINER ID] /bin/sh
-    docker exec -it [CONTAINER ID] /bin/bash
+    $ docker container ls
+    $ docker logs [CONTAINER ID]
+    $ docker exec -it [CONTAINER ID] /bin/sh
+    $ docker exec -it [CONTAINER ID] /bin/bash
     
-    $docker ps -q | xargs docker stats
+    $ docker ps -q | xargs docker stats
 
-    __Standard command__
+    Standard command
     $ docker image ls
     $ docker container ls
     $ docker container run oujai/myweb:1.0.0
-    __Run in background service__
+
+    Run in background service
     $ docker container run -d oujai/myweb:1.0.0
     $ curl localhost:5000
     $ docker container stop 1052821d0562
-    __Connect port__
+
+    Connect port
     $ docker container run -d -p 8080:5000 oujai/myweb:1.0.0
     $ curl -s localhost:8080
-    __Start shell__
+
+    Start shell
     $ docker container ls
     $ docker container exec -it e53fed3d19fa /bin/sh
     # curl localhost:5000
     $ docker container stop e53fed3d19fa
-    __Map local directory__
+
+    Map local directory
     $ docker container run -d -p 8080:5000 -v $(pwd):/app oujai/myweb:1.0.0
     $ echo "hi" > a.log
     $ docker container exec -it b0c5377138ec /bin/sh
@@ -78,15 +82,15 @@
 
 เนื่องจากเรามี Docker บนเครื่องแล้ว เราจึงสามารถเสก Application อะไรก็ได้บนเครื่องเรา ซึ่งเราก็จะเสก Image Registry version 2 ขึ้นมาใช้งานบนเครื่องเราเอง ขั้นตอนง่ายๆ ก็คือการ Run command ด้านล่าน โดยลองสังเกตุดูดีๆ จะเห็นว่าเราเปิด port 8080 ใช้งาน
 
-    docker run -d -p 8080:5000 --name registry --restart=always registry:2 
+    $ docker run -d -p 8080:5000 --name registry --restart=always registry:2 
 
 เมื่อเราได้ Image Registry ขึ้นมาแล้วเราก็สามารถ ส่ง Image ของเราขึ้นไปได้เลยโดย Commanhd ด้านล่างซึ่งจะเห็นว่า เรามีการเพิ่ม [localhost:8080/] ซึ่งเป็น path ของ Local Image Registry ที่เราพึ่งสร้างขึ้นมาเมื่อตั่งกี้นี่เอง
 
-    docker image build -t localhost:8080/asnpahp/myweb . 
-    docker image tag localhost:8080/asnpahp/myweb localhost:8080/asnpahp/myweb
-    docker image push localhost:8080/asnpahp/myweb
+    $ docker image build -t localhost:8080/asnpahp/myweb . 
+    $ docker image tag localhost:8080/asnpahp/myweb localhost:8080/asnpahp/myweb
+    $ docker image push localhost:8080/asnpahp/myweb
 
-    docker container run localhost:8080/asnpahp/myweb
+    $ docker container run localhost:8080/asnpahp/myweb
 
 เราสามารถเช็คว่าเราได้ทำการ push Image เข้า Registry เรียบร้อยแล้วโดยการเช็คที่ URL [http://localhost:8080/v2/_catalog](http://localhost:8080/v2/_catalog) เราก็จะเห็น Image ที่ชื่อ asnpahp/myweb โพล่ขึ้นมา!!!
 
@@ -98,48 +102,53 @@
 
 สุดท้ายแล้ว เราก็พร้อมที่จะเอา application myweb ขึ้น Kubernetes โดยใช้ไฟล์ [deployment.yaml](/kube-myweb/deployment.yaml) และ สร้างทางเข้า application ผ่านไฟล์ [service.yaml](/kube-myweb/service-nodeport.yaml) 
 
-    kubectl apply -f deployment.yaml
-    kubectl get deployment
+    $ kubectl apply -f deployment.yaml
+    $ kubectl get deployment
 
-    kubectl apply -f service.yaml
-    kubectl get service
+    $ kubectl apply -f service.yaml
+    $ kubectl get service
 
 แถม Command ที่ใช้บ่อยๆของ Kubernetes
 
-    <b>แสดง pods</b>
-    kubectl get pods
-    kubectl get pods | findstr myweb
-    __ดูรายละเอียด pods__
-    kubectl describe pods
-    kubectl describe pods [pod id]
-    __ลบ pods__
-    kubectl delete pods [pod id]
-    __แสดง services__
-    kubectl get services
-    kubectl get services demo-nginx 
-    __เข้าถึง containers ผ่าน shell__
-    kubectl exec -it [pod id] sh
-    __แสดง logs__
-    kubectl logs -f [pod id]
-    kubectl logs --max-log-requests=8 -f -l app=myweb > mylog.log
+    แสดง pods
+    $ kubectl get pods
+    $ kubectl get pods | findstr myweb
+
+    ดูรายละเอียด pods
+    $ kubectl describe pods
+    $ kubectl describe pods [pod id]
+
+    ลบ pods
+    $ kubectl delete pods [pod id]
+
+    แสดง services
+    $ kubectl get services
+
+    เข้าถึง containers ผ่าน shell
+    $ kubectl exec -it [pod id] /bin/sh
+
+    แสดง logs
+    $ kubectl logs -f [pod id]
+    $ kubectl logs --max-log-requests=8 -f -l app=myweb > mylog.log
 
 การ Install ทั้ง Docker และ Kubernetes จะแอบแก้ไขไฟล์ C:\Windows\System32\drivers\etc\hosts ให้เราอัติโนมัติ
 
-    __# Added by Docker Desktop__
+    # Added by Docker Desktop
     192.168.48.118 host.docker.internal
     192.168.48.118 gateway.docker.internal
-    __# To allow the same kube context to work on the host and the container:__
+
+    # To allow the same kube context to work on the host and the container:
     127.0.0.1 kubernetes.docker.internal
 
 
 ## 4. Additional
 เมื่อเรามี Kubernetes เราสามารถเสก Kubernetes Dashboard ขึ้นมาใช้งานได้ด้วยคำสั่งด้านล่าง
 
-    kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0/aio/deploy/recommended.yaml
-    kubectl proxy
+    $ kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0/aio/deploy/recommended.yaml
+    $ kubectl proxy
 
 สามารถเข้าใช้งาน Dashboard ด้วย URL http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/. ซึ่งก่อนที่จะเข้าไปดูข้อมูลได้นั้นเราต้องไปเอา token จาก command ด้านล่างมาใส่ในหน้า login
 
-    kubectl -n kube-system describe secret default
+    $ kubectl -n kube-system describe secret default
 
 หรือถ้าใช้ Visural Studio Code แล้วหละก็แนะนำ Extension สองตัวนี้โลดดดดด [Docker](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker) กับ [Kubernetes](https://marketplace.visualstudio.com/items?itemName=ms-kubernetes-tools.vscode-kubernetes-tools)
