@@ -83,7 +83,7 @@
 เมื่อเราได้ Image Registry ขึ้นมาแล้วเราก็สามารถ ส่ง Image ของเราขึ้นไปได้เลยโดย Commanhd ด้านล่างซึ่งจะเห็นว่า เรามีการเพิ่ม [localhost:8080/] ซึ่งเป็น path ของ Local Image Registry ที่เราพึ่งสร้างขึ้นมาเมื่อตั่งกี้นี่เอง
 
     docker image build -t localhost:8080/asnpahp/myweb . 
-    docker image tag myweb localhost:8080/asnpahp/myweb
+    docker image tag localhost:8080/asnpahp/myweb localhost:8080/asnpahp/myweb
     docker image push localhost:8080/asnpahp/myweb
 
     docker container run localhost:8080/asnpahp/myweb
@@ -106,21 +106,21 @@
 
 แถม Command ที่ใช้บ่อยๆของ Kubernetes
 
-    __แสดง pods__
+    <b>แสดง pods</b>
     kubectl get pods
     kubectl get pods | findstr myweb
     __ดูรายละเอียด pods__
     kubectl describe pods
-    kubectl describe pods [pod id] // แสดงเฉพาะ demo-nginx
+    kubectl describe pods [pod id]
     __ลบ pods__
     kubectl delete pods [pod id]
     __แสดง services__
     kubectl get services
-    kubectl get services demo-nginx // แสดงเฉพาะ demo-nginx
+    kubectl get services demo-nginx 
     __เข้าถึง containers ผ่าน shell__
-    kubectl exec -it demo-nginx-548685f5cc-v7rmc sh
+    kubectl exec -it [pod id] sh
     __แสดง logs__
-    kubectl logs -f demo-nginx-548685f5cc-v7rmc
+    kubectl logs -f [pod id]
     kubectl logs --max-log-requests=8 -f -l app=myweb > mylog.log
 
 การ Install ทั้ง Docker และ Kubernetes จะแอบแก้ไขไฟล์ C:\Windows\System32\drivers\etc\hosts ให้เราอัติโนมัติ
