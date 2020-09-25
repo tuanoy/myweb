@@ -1,7 +1,7 @@
 # CI and CD ด้วย Docker, Image Registry และ Kubernetes บน Localhost(Window 10)
 เพื่อให้เข้าใจการทำงานของ CI และ CD ก่อนที่จะทำการส่ง Code ของเราขึ้น Cloud โดยผูกขั้นตอนต่างๆ เข้ากับ Tool อย่างพวก Jenkins จึงชวนทุกคนมา เล่น Docker, Image Registry และ Kubernetes บนเครื่อง Local ที่ไม่ว่าจะเล่นอย่างไรก็ยังไม่ต้องเสียค่าใช้จ่ายให้ Cloud Provider 
 
-![BigPicture](image/Bigpicture.png?raw=true "BigPicture")
+![BigPicture](resource/Bigpicture.png?raw=true "BigPicture")
 
 
 ## 0. Python web app
@@ -13,13 +13,13 @@
 
     from flask import Flask
 
-    app = Flask(__name__)
+    app = Flask(**name**)
 
     @app.route('/')
     def homepage():
         return "Welcome to my webpage"
     
-    if __name__ == '__main__':
+    if **name** == '**main**':
         app.run(host='0.0.0.0', port='5000')
 
 โดยเราสามารถรัน application ของเราด้วย command ด้านล่างนี้ซึ่งถ้าไม่มีปัญหาอะไร เราจะสามารถเรียก application ของเราผ่าน browser ด้วย URL: [http://127.0.0.1:5000/](http://127.0.0.1:5000/) ซึ่งแสดงคำว่า "Welcome to my webpage" ออกมา
@@ -51,23 +51,23 @@
     
     $docker ps -q | xargs docker stats
 
-    __Standard command__
+    **Standard command**
     $ docker image ls
     $ docker container ls
     $ docker container run oujai/myweb:1.0.0
-    __Run in background service__
+    **Run in background service**
     $ docker container run -d oujai/myweb:1.0.0
     $ curl localhost:5000
     $ docker container stop 1052821d0562
-    __Connect port__
+    **Connect port**
     $ docker container run -d -p 8080:5000 oujai/myweb:1.0.0
     $ curl -s localhost:8080
-    __Start shell__
+    **Start shell**
     $ docker container ls
     $ docker container exec -it e53fed3d19fa /bin/sh
     # curl localhost:5000
     $ docker container stop e53fed3d19fa
-    __Map local directory__
+    **Map local directory**
     $ docker container run -d -p 8080:5000 -v $(pwd):/app oujai/myweb:1.0.0
     $ echo "hi" > a.log
     $ docker container exec -it b0c5377138ec /bin/sh
@@ -105,28 +105,28 @@
     kubectl get service
 
 แถม Command ที่ใช้บ่อยๆของ Kubernetes
-    __แสดง pods__
+    **แสดง pods**
     kubectl get pods
     kubectl get pods | findstr myweb
-    __ดูรายละเอียด pods__
+    **ดูรายละเอียด pods**
     kubectl describe pods
     kubectl describe pods [pod id] // แสดงเฉพาะ demo-nginx
-    __ลบ pods__
+    **ลบ pods**
     kubectl delete pods [pod id]
-    __แสดง services__
+    **แสดง services**
     kubectl get services
     kubectl get services demo-nginx // แสดงเฉพาะ demo-nginx
-    __เข้าถึง containers ผ่าน shell__
+    **เข้าถึง containers ผ่าน shell**
     kubectl exec -it demo-nginx-548685f5cc-v7rmc sh
-    __แสดง logs__
+    **แสดง logs**
     kubectl logs -f demo-nginx-548685f5cc-v7rmc
     kubectl logs --max-log-requests=8 -f -l app=myweb > mylog.log
 
 การ Install ทั้ง Docker และ Kubernetes จะแอบแก้ไขไฟล์ C:\Windows\System32\drivers\etc\hosts ให้เราอัติโนมัติ
-    __# Added by Docker Desktop__
+    **# Added by Docker Desktop**
     192.168.48.118 host.docker.internal
     192.168.48.118 gateway.docker.internal
-    __# To allow the same kube context to work on the host and the container:__
+    **# To allow the same kube context to work on the host and the container:**
     127.0.0.1 kubernetes.docker.internal
 
 
