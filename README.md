@@ -13,13 +13,13 @@
 
     from flask import Flask
 
-    app = Flask(**name**)
+    app = Flask(__name__)
 
     @app.route('/')
     def homepage():
         return "Welcome to my webpage"
     
-    if **name** == '**main**':
+    if __name__ == '__main__':
         app.run(host='0.0.0.0', port='5000')
 
 โดยเราสามารถรัน application ของเราด้วย command ด้านล่างนี้ซึ่งถ้าไม่มีปัญหาอะไร เราจะสามารถเรียก application ของเราผ่าน browser ด้วย URL: [http://127.0.0.1:5000/](http://127.0.0.1:5000/) ซึ่งแสดงคำว่า "Welcome to my webpage" ออกมา
@@ -51,23 +51,23 @@
     
     $docker ps -q | xargs docker stats
 
-    **Standard command**
+    __Standard command__
     $ docker image ls
     $ docker container ls
     $ docker container run oujai/myweb:1.0.0
-    **Run in background service**
+    __Run in background service__
     $ docker container run -d oujai/myweb:1.0.0
     $ curl localhost:5000
     $ docker container stop 1052821d0562
-    **Connect port**
+    __Connect port__
     $ docker container run -d -p 8080:5000 oujai/myweb:1.0.0
     $ curl -s localhost:8080
-    **Start shell**
+    __Start shell__
     $ docker container ls
     $ docker container exec -it e53fed3d19fa /bin/sh
     # curl localhost:5000
     $ docker container stop e53fed3d19fa
-    **Map local directory**
+    __Map local directory__
     $ docker container run -d -p 8080:5000 -v $(pwd):/app oujai/myweb:1.0.0
     $ echo "hi" > a.log
     $ docker container exec -it b0c5377138ec /bin/sh
@@ -105,28 +105,28 @@
     kubectl get service
 
 แถม Command ที่ใช้บ่อยๆของ Kubernetes
-    **แสดง pods**
+    __แสดง pods__
     kubectl get pods
     kubectl get pods | findstr myweb
-    **ดูรายละเอียด pods**
+    __ดูรายละเอียด pods__
     kubectl describe pods
     kubectl describe pods [pod id] // แสดงเฉพาะ demo-nginx
-    **ลบ pods**
+    __ลบ pods__
     kubectl delete pods [pod id]
-    **แสดง services**
+    __แสดง services__
     kubectl get services
     kubectl get services demo-nginx // แสดงเฉพาะ demo-nginx
-    **เข้าถึง containers ผ่าน shell**
+    __เข้าถึง containers ผ่าน shell__
     kubectl exec -it demo-nginx-548685f5cc-v7rmc sh
-    **แสดง logs**
+    __แสดง logs__
     kubectl logs -f demo-nginx-548685f5cc-v7rmc
     kubectl logs --max-log-requests=8 -f -l app=myweb > mylog.log
 
 การ Install ทั้ง Docker และ Kubernetes จะแอบแก้ไขไฟล์ C:\Windows\System32\drivers\etc\hosts ให้เราอัติโนมัติ
-    **# Added by Docker Desktop**
+    __# Added by Docker Desktop__
     192.168.48.118 host.docker.internal
     192.168.48.118 gateway.docker.internal
-    **# To allow the same kube context to work on the host and the container:**
+    __# To allow the same kube context to work on the host and the container:__
     127.0.0.1 kubernetes.docker.internal
 
 
