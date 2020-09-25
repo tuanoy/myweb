@@ -105,6 +105,7 @@
     kubectl get service
 
 แถม Command ที่ใช้บ่อยๆของ Kubernetes
+
     __แสดง pods__
     kubectl get pods
     kubectl get pods | findstr myweb
